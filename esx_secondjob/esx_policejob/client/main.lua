@@ -1227,11 +1227,19 @@ function OpenPutStocksMenu()
 
 end
 
+RegisterNetEvent('esx:setJob')
+AddEventHandler('esx:setJob', function(job)
+	ESX.PlayerData.job = job
+	
+	Citizen.Wait(5000)
+	TriggerServerEvent('esx_policejob:forceBlip')
+end)
+
 ---SECONDJOB INCLUDED
 RegisterNetEvent('esx:setJob2')
 AddEventHandler('esx:setJob2', function(job2)
-	PlayerData.job2 = job2
-	
+	ESX.PlayerData.job2 = job2
+  
 	Citizen.Wait(5000)
 	TriggerServerEvent('esx_policejob:forceBlip')
 end)
@@ -1326,9 +1334,7 @@ end)
 AddEventHandler('esx_policejob:hasEnteredEntityZone', function(entity)
 	local playerPed = PlayerPedId()
 
-	--if PlayerData.job ~= nil and PlayerData.job.name == 'police' and IsPedOnFoot(playerPed) then
-	---SECONDJOB INCLUDED
-	if (PlayerData.job ~=nil and PlayerData.job.name=='police') or (PlayerData.job2 ~=nil and PlayerData.job2.name=='police') then
+	if PlayerData.job ~= nil and PlayerData.job.name == 'police' and IsPedOnFoot(playerPed) then
 		CurrentAction     = 'remove_entity'
 		CurrentActionMsg  = _U('remove_prop')
 		CurrentActionData = {entity = entity}
@@ -1590,8 +1596,9 @@ Citizen.CreateThread(function()
 
 		Citizen.Wait(1)
 
-		if PlayerData.job ~= nil and PlayerData.job.name == 'police' then
-
+		--if PlayerData.job ~= nil and PlayerData.job.name == 'police' then
+---SECONDJOB INCLUDED
+		if (PlayerData.job ~=nil and PlayerData.job.name=='police') or (PlayerData.job2 ~=nil and PlayerData.job2.name=='police') then
 			local playerPed = PlayerPedId()
 			local coords    = GetEntityCoords(playerPed)
 
@@ -1645,7 +1652,9 @@ Citizen.CreateThread(function()
 
 		Citizen.Wait(10)
 
-		if PlayerData.job ~= nil and PlayerData.job.name == 'police' then
+		--if PlayerData.job ~= nil and PlayerData.job.name == 'police' then
+		---SECOND JOB INCLUDED
+		if (PlayerData.job ~=nil and PlayerData.job.name=='police') or (PlayerData.job2 ~=nil and PlayerData.job2.name=='police') then
 
 			local playerPed      = PlayerPedId()
 			local coords         = GetEntityCoords(playerPed)
@@ -1912,7 +1921,9 @@ AddEventHandler('esx_policejob:updateBlip', function()
 	end
 	
 	-- Is the player a cop? In that case show all the blips for other cops
-	if PlayerData.job ~= nil and PlayerData.job.name == 'police' then
+	--if PlayerData.job ~= nil and PlayerData.job.name == 'police' then
+	---SECONDJOB INCLUDED
+	if (PlayerData.job ~=nil and PlayerData.job.name=='police') or (PlayerData.job2 ~=nil and PlayerData.job2.name=='police') then
 		ESX.TriggerServerCallback('esx_society:getOnlinePlayers', function(players)
 			for i=1, #players, 1 do
 				if players[i].job.name == 'police' then
